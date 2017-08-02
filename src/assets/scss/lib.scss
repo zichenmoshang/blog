@@ -1,3 +1,33 @@
-.pxToRem() {
+@import "variables";
 
+@function strip-units($number) {
+  @return $number / ($number * 0 + 1);
+}
+
+@mixin px2rem($property, $values...) {
+  $max: length($values);
+  $pxValues: '';
+  $remValues: '';
+
+  @for $i from 1 through $max {
+    $value: strip-units(nth($values, $i));
+    $pxValues: #{$pxValues + $value}px;
+
+    @if $i < $max {
+      $pxValues: #{$pxValues + " "};
+    }
+  }
+
+  @for $i from 1 through $max {
+    $value: strip-units(nth($values, $i));
+    $base-font-size: strip-units($base-font-size);
+    $remValues: #{$remValues + $value / $base-font-size}rem;
+
+    @if $i < $max {
+      $remValues: #{$remValues + " "};
+    }
+  }
+
+  #{$property}: $pxValues;
+  #{$property}: $remValues;
 }

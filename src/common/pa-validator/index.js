@@ -1,6 +1,3 @@
-/**
- * Created by weihualiang048 on 17/7/17.
- */
 import PaForm from './components/pa-form';
 import PaMessage from './components/pa-message';
 import validate from './directive/validate';

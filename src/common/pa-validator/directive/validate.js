@@ -1,7 +1,3 @@
-/**
- * Created by weihualiang048 on 17/7/17.
- */
-
 import {getValue} from '../utils';
 import {FieldState} from '../state';
 

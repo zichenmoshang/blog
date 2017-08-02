@@ -1,6 +1,3 @@
-/**
- * Created by weihualiang048 on 17/7/28.
- */
 import Vue from 'vue';
 import validators from './validators';
 

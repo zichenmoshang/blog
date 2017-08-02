@@ -1,0 +1,12 @@
+[
+  {
+    "name": "按钮1",
+    "code": "0001",
+    "href": "/pre/register"
+  },
+  {
+    "name": "按钮2",
+    "code": "0002",
+    "href": "/pre/login"
+  }
+]

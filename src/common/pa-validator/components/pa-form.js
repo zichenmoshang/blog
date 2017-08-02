@@ -1,6 +1,3 @@
-/**
- * Created by weihualiang048 on 17/7/17.
- */
 import {vueFormState, vueFormConfig} from '../providers';
 import {getVModels, getClasses} from '../utils';
 import {FormState} from '../state';

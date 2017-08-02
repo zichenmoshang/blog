@@ -1,7 +1,3 @@
-/**
- * Created by weihualiang048 on 17/7/31.
- */
-
 import Header from './header';
 
 const install = (Vue) => {

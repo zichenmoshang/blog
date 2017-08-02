@@ -1,7 +1,3 @@
-/**
- * Created by weihualiang048 on 17/7/17.
- */
-
 /* eslint-disable no-magic-numbers */
 
 export function extend(...rest) {

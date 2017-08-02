@@ -1,7 +1,3 @@
-/**
- * Created by weihualiang048 on 17/7/26.
- */
-
 export default {
   required(value) {
     return !!value;

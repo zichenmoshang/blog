@@ -1,7 +1,3 @@
-/**
- * Created by weihualiang048 on 17/7/26.
- */
-
 import {vueFormState, vueFormConfig} from '../providers';
 
 export default {
