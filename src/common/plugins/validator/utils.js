@@ -28,6 +28,9 @@ export function getVModels(vnodes) {
           vModels.push(node);
         }
       }
+      if (node.children) {
+        search(node.children);
+      }
     }
   })(vnodes);
   return vModels;
@@ -42,6 +45,17 @@ export function getClasses(config, state) {
     [config.dirty]: state.$dirty,
     [config.pristine]: state.$pristine,
     [config.valid]: state.$valid,
-    [config.invalid]: state.$invalid
+    [config.invalid]: state.$invalid,
+    [config.submit]: state.$submit
   };
+}
+
+export function copy(source) {
+  let tmp = source instanceof Array ? [] : {};
+  for (let props in source) {
+    if (source.hasOwnProperty(props)) {
+      tmp[props] = source[source] instanceof Object ? copy(source[props]) : source[props];
+    }
+  }
+  return tmp;
 }

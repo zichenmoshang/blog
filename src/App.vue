@@ -12,4 +12,6 @@
 
 <style lang="scss">
   @import "assets/scss/common";
+  @import "assets/scss/z-form";
+
 </style>

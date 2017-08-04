@@ -1,0 +1,24 @@
+@import "variables";
+
+.z-form input{
+  border: 1px solid $color-gray;
+  &:focus {
+    border-color: $color-blue;
+  }
+}
+
+.z-field-invalid {
+  border: $color-red;
+}
+
+.z-form-pristine{
+  .z-field-invalid {
+    border-color: $color-gray;
+  }
+  &.z-form-submit {
+    .z-field-invalid {
+      border-color: $color-red;
+    }
+  }
+}
+

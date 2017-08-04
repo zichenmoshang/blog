@@ -4,13 +4,11 @@ import Vue from 'vue';
 import App from './App';
 import store from './store';
 import router from './router';
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-default/index.css';
-
+import Validator from './common/plugins/validator';
 
 Vue.config.productionTip = false;
 
-Vue.use(ElementUI);
+Vue.use(Validator);
 
 /* eslint-disable no-new */
 new Vue({

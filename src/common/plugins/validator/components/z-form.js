@@ -1,28 +1,21 @@
 import {vueFormState, vueFormConfig} from '../providers';
-import {getVModels, getClasses} from '../utils';
+import {getClasses, extend} from '../utils';
 import {FormState} from '../state';
 
 export default {
   render(h) {
-    let vnodes = getVModels(this.$slots.default);
-    vnodes.forEach(nodes => {
-      if (!nodes.data.directives) {
-        nodes.data.directives = [];
-      }
-      nodes.data.directives.push({name: 'validate', value: {formState: this.state, fn: this.formState, formConfig: this.vueFormConfig}});
-    });
     return h(this.vueFormConfig.formTag, {
       attrs: {
         'novalidate': '',
         'autocomplete': 'off'
       },
-      class: this.className
+      class: [this.className, 'z-form']
     }, this.$slots.default);
   },
   inject: {vueFormConfig},
   provide() {
     return {
-      [vueFormState]: this.state
+      [vueFormState]: this.formState
     };
   },
   props: {
@@ -32,7 +25,9 @@ export default {
       default() {
         return {};
       }
-    }
+    },
+    labelPosition: String,
+    labelWidth: String
   },
   data() {
     return {
@@ -46,10 +41,27 @@ export default {
       return getClasses(c, s);
     }
   },
+  watch: {
+    formState(state) {
+      Object.keys(state).forEach((key) => {
+        this.$set(this.state, key, state[key]);
+      });
+    }
+  },
   created() {
     this.formState = new FormState();
-    Object.keys(this.formState).forEach((key) => {
-      this.$set(this.state, key, this.formState[key]);
-    });
+    this.setLabel();
+  },
+  methods: {
+    setLabel() {
+      const label = {
+        position: this.labelPosition,
+        width: this.labelWidth
+      };
+      this.vueFormConfig.label = extend({}, label, this.vueFormConfig.label);
+    },
+    submit() {
+      this.formState._setSubmit.call(this.state);
+    }
   }
 };

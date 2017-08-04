@@ -6,7 +6,14 @@
         <img src="">
       </a>
       <nav class="main-nav">
-        {{access}}
+        <ul>
+          <li>
+            <span>XXX</span>
+          </li>
+          <li>
+            <span></span>
+          </li>
+        </ul>
         <ul class="navList">
           <li class="navItem" v-for="nav in navList" @click="navClick(nav.href)">
             <span v-text="nav.name"></span>

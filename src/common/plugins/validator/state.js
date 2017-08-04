@@ -7,6 +7,11 @@ export class FormState {
     this.$pristine = true;
     this.$valid = true;
     this.$invalid = false;
+    this.$submit = false;
+  }
+
+  _setSubmit() {
+    this.$submit = true;
   }
 
   _setValidity() {
@@ -48,12 +53,13 @@ export class FieldState {
     this.$valid = true;
     this.$invalid = false;
     this.$error = {};
+    this._oldValue = '';
   }
 
   _changeClass(el, formConfig) {
     let className = [];
     Object.keys(this.$error).forEach(props => {
-      className.push('pa-field-' + props);
+      className.push('z-field-' + props);
     });
     className.forEach(name => {
       el.classList.add(name);
@@ -86,14 +92,14 @@ export class FieldState {
   }
 
   _setDirty(value) {
-    if (this.$pristine && value !== this._data._oldValue) {
+    if (this.$pristine && value !== this._oldValue) {
       this.$dirty = true;
       this.$pristine = false;
-      this._data._oldValue = value;
+      this._oldValue = value;
     }
   }
 
-  _valid(value, attrs, el, formConfig) {
+  _valid(value, attrs) {
     let errNum = 0;
     Object.keys(attrs).forEach(props => {
       if (validators[props]) {
@@ -112,7 +118,6 @@ export class FieldState {
     }
     this._setValidity(errNum === 0);
     this._setOldValue(value);
-    this._changeClass(el, formConfig);
   }
 }
 

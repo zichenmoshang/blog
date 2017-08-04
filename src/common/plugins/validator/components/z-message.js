@@ -2,7 +2,7 @@ import {vueFormState, vueFormConfig} from '../providers';
 
 export default {
   inject: {vueFormState, vueFormConfig},
-  name: 'pa-message',
+  name: 'z-message',
   render(h) {
     if (!this.name) {
       throw new Error('props name is necessary');
@@ -12,12 +12,16 @@ export default {
     }
     let error = this.vueFormState[this.name]['$error'];
     let slots = [];
-    Object.keys(this.$slots).forEach(name => {
-      if (error[name] === false) {
-        slots.push(this.$slots[name]);
-      }
-    });
-    return h(this.vueFormConfig.msgTag, {}, slots);
+    if (this.vueFormState[this.name]['$dirty'] || this.vueFormState['$submit']) {
+      Object.keys(this.$slots).forEach(name => {
+        if (error[name]) {
+          slots.push(this.$slots[name]);
+        }
+      });
+    }
+    return h(this.vueFormConfig.msgTag, {
+      class: 'z-msg'
+    }, slots);
   },
   props: {
     name: {

@@ -12,6 +12,7 @@ const getters = {
 const mutations = {
   [types.SAVE_ACCESS](state, access) {
     state.access = access;
+    window.sessionStorage.setItem('token', 'token');
   }
 };
 
