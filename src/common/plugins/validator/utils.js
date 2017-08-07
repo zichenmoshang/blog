@@ -50,6 +50,14 @@ export function getClasses(config, state) {
   };
 }
 
+export function getFieldClasses(config, state) {
+  let classes = getClasses(config, state);
+  Object.keys(state['$error']).forEach(props => {
+    classes[`z-field-${props}`] = true;
+  });
+  return classes;
+}
+
 export function copy(source) {
   let tmp = source instanceof Array ? [] : {};
   for (let props in source) {

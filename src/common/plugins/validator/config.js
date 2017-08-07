@@ -3,8 +3,6 @@ export default {
   formTag: 'form',
   formItemComponent: 'z-form-item',
   formItemTag: 'div',
-  msgComponent: 'z-message',
-  msgTag: 'div',
   formClasses: {
     dirty: 'z-form-dirty',
     pristine: 'z-form-pristine',
@@ -20,6 +18,6 @@ export default {
   },
   label: {
     position: 'left',
-    width: '80px'
+    width: '60px'
   }
 };

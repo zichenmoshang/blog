@@ -1,49 +1,7 @@
 import Vue from 'vue';
 import validators from './validators';
-
-export class FormState {
-  constructor() {
-    this.$dirty = false;
-    this.$pristine = true;
-    this.$valid = true;
-    this.$invalid = false;
-    this.$submit = false;
-  }
-
-  _setSubmit() {
-    this.$submit = true;
-  }
-
-  _setValidity() {
-    let isValid = true;
-    for (let field of Object.values(this)) {
-      if (Object.prototype.toString.call(field) === '[object Object]' && field.$invalid) {
-        isValid = false;
-        break;
-      }
-    }
-    this.$valid = isValid;
-    this.$invalid = !isValid;
-  }
-
-  _setDirty() {
-    for (let field of Object.values(this)) {
-      if (Object.prototype.toString.call(field) === '[object Object]' && field.$dirty) {
-        this.$dirty = true;
-        this.$pristine = false;
-        break;
-      }
-    }
-  }
-
-  _addControl(ctrl) {
-    Vue.set(this, ctrl.$name, ctrl);
-  }
-
-  _removeControl(ctrl) {
-    Vue.delete(this, ctrl.$name);
-  }
-}
+import {formBridge} from './providers';
+import {extend} from './utils';
 
 export class FieldState {
   constructor(name) {
@@ -53,32 +11,17 @@ export class FieldState {
     this.$valid = true;
     this.$invalid = false;
     this.$error = {};
-    this._oldValue = '';
+    this.$errMsg = {};
+    this._oldValue = undefined;
   }
 
-  _changeClass(el, formConfig) {
-    let className = [];
-    Object.keys(this.$error).forEach(props => {
-      className.push('z-field-' + props);
-    });
-    className.forEach(name => {
-      el.classList.add(name);
-    });
-    this._protoClass(el, this.$dirty, formConfig.fieldClasses['dirty']);
-    this._protoClass(el, this.$pristine, formConfig.fieldClasses['pristine']);
-    this._protoClass(el, this.$valid, formConfig.fieldClasses['valid']);
-    this._protoClass(el, this.$invalid, formConfig.fieldClasses['invalid']);
-  }
-
-  _protoClass(el, flag, className) {
-    flag ? el.classList.add(className) : el.classList.remove(className);
-  }
-
-  _setValidatorVadility(validator, isValid) {
+  _setValidatorVadility(validator, isValid, msg) {
     if (isValid) {
       Vue.delete(this.$error, validator);
+      Vue.delete(this.$errMsg, validator);
     } else {
       Vue.set(this.$error, validator, true);
+      Vue.set(this.$errMsg, validator, msg);
     }
   }
 
@@ -88,7 +31,7 @@ export class FieldState {
   }
 
   _setOldValue(value) {
-    this._data._oldValue = value;
+    this._oldValue = value;
   }
 
   _setDirty(value) {
@@ -101,26 +44,17 @@ export class FieldState {
 
   _valid(value, attrs) {
     let errNum = 0;
+    const customValidators = attrs.validators;
+    const _validators = extend({}, validators, customValidators || {});
     Object.keys(attrs).forEach(props => {
-      if (validators[props]) {
-        let isTrue = validators[props](value, attrs[props]);
-        this._setValidatorVadility(props, isTrue);
+      if (_validators[props]) {
+        let isTrue = _validators[props]['fn'](value, attrs[props]);
+        this._setValidatorVadility(props, isTrue, _validators[props]['msg']);
         !isTrue && errNum++;
       }
     });
-    const customValidators = attrs.validators;
-    if (customValidators) {
-      Object.keys(customValidators).forEach(props => {
-        let isTrue = customValidators[props](value);
-        this._setValidatorVadility(props, isTrue);
-        !isTrue && errNum++;
-      });
-    }
     this._setValidity(errNum === 0);
     this._setOldValue(value);
+    formBridge.$emit('fieldChange');
   }
 }
-
-FieldState.prototype._data = {
-  _oldValue: ''
-};

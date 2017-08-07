@@ -2,11 +2,11 @@
   {
     "name": "注册",
     "code": "0001",
-    "href": "/pre/register"
+    "href": "/blog/register"
   },
   {
     "name": "登陆",
     "code": "0002",
-    "href": "/pre/login"
+    "href": "/blog/login"
   }
 ]

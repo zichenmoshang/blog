@@ -1,53 +1,27 @@
 <template>
   <div class="login">
     <p class="login-title">登陆</p>
-    <z-form :state="state"
-            ref="loginForm">
+    <z-form :state="state">
       <z-form-item name="userName" label="用户名">
         <input type="text"
                name="userName"
                v-model="form.userName"
                required>
       </z-form-item>
-      <z-form-item name="password">
-
-      </z-form-item>
-      <z-form-item name="confirmPassword">
-
-      </z-form-item>
-      <div class="login-item">
-        <label>用户名</label>
-        <input type="text"
-               name="userName"
-               v-model="form.userName"
-               required>
-        <z-message name="userName">
-          <p slot="required">请输入用户名</p>
-        </z-message>
-      </div>
-      <div class="login-item">
-        <label>密码</label>
-        <input type="text"
+      <z-form-item name="password" label="密码">
+        <input type="password"
                name="password"
                v-model="form.password"
                required>
-        <z-message name="password">
-          <p slot="required">请输入密码</p>
-        </z-message>
-      </div>
-      <div class="login-item">
-        <label>确认密码</label>
-        <input type="text"
+      </z-form-item>
+      <z-form-item name="confirmPassword" label="确认密码">
+        <input type="password"
                name="confirmPassword"
                v-model="form.confirmPassword"
                required>
-        <z-message name="confirmPassword">
-          <p slot="required">请确认密码</p>
-        </z-message>
-      </div>
+      </z-form-item>
     </z-form>
-    <button @click="submit('loginForm')">登陆</button>
-    {{state}}
+    <button class="login-btn" @click="submit">登陆</button>
   </div>
 </template>
 
@@ -70,10 +44,12 @@
       ...mapActions([
         'login'
       ]),
-      submit(formName) {
-        this.$refs[formName].submit();
+      submit() {
+        this.state._setSubmit();
         if (this.state.$valid) {
-          this.$router.push('/pre/home');
+          this.login(this.form).then(res => {
+            this.$router.push('/blog/home');
+          });
         }
       }
     }
@@ -104,7 +80,15 @@
     }
   }
 
-  .btn-login {
+  .login-btn {
     @include px2rem(width, 150px);
+    @include px2rem(line-height, 40px);
+    background-color: $color-blue;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 4px;
+    &:hover {
+      background-color: $color-blue * 0.8;
+    }
   }
 </style>

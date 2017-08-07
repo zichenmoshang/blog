@@ -6,26 +6,26 @@ Vue.use(Router);
 const routes = [
   {
     path: '/',
-    redirect: '/pre/home'
+    redirect: '/blog/home'
   },
   {
-    path: '/pre',
-    name: 'pre',
+    path: '/blog',
+    name: 'blog',
     component: resolve => {
-      require.ensure(['@/page/pre/index'], () => {
-        resolve(require('@/page/pre/index'));
-      }, 'pre');
+      require.ensure(['@/page/blog/index'], () => {
+        resolve(require('@/page/blog/index'));
+      }, 'blog');
     },
     children: [
       {
         path: 'login',
         name: 'login',
         meta: {
-          access: true
+          level: 0
         },
         component: resolve => {
-          require.ensure(['@/page/pre/login'], () => {
-            resolve(require('@/page/pre/login'));
+          require.ensure(['@/page/blog/login'], () => {
+            resolve(require('@/page/blog/login'));
           }, 'login');
         }
       },
@@ -33,12 +33,35 @@ const routes = [
         path: 'home',
         name: 'home',
         meta: {
-          access: true
+          level: 0
         },
         component: resolve => {
-          require.ensure(['@/page/pre/home'], () => {
-            resolve(require('@/page/pre/home'));
+          require.ensure(['@/page/blog/home'], () => {
+            resolve(require('@/page/blog/home'));
           }, 'home');
+        }
+      }
+    ]
+  },
+  {
+    path: '/manage',
+    name: 'manage',
+    component: resolve => {
+      require.ensure(['@/page/manage/index'], () => {
+        resolve(require('@/page/manage/index'));
+      }, 'manage');
+    },
+    children: [
+      {
+        path: 'note',
+        name: 'note',
+        meta: {
+          level: 1
+        },
+        component: resolve => {
+          require.ensure(['@/page/manage/note'], () => {
+            resolve(require('@/page/manage/note'));
+          }, 'note');
         }
       }
     ]
@@ -52,10 +75,10 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   /* login */
-  if (!to.meta.access) {
+  if (to.meta.level === 1) {
     if (!sessionStorage.getItem('accessToken')) {
       next({
-        path: '/pre/login'
+        path: '/blog/login'
       });
       return;
     }

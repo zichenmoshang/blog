@@ -1,4 +1,4 @@
-const API_LOGIN = '/api/pre/login';
+const API_LOGIN = '/api/blog/login';
 
 export {
   API_LOGIN

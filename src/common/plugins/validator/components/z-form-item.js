@@ -1,5 +1,5 @@
-import {vueFormState, vueFormConfig} from '../providers';
-import {getVModels, getClasses} from '../utils';
+import {vueFormState, vueFormConfig, formBridge} from '../providers';
+import {getVModels, getFieldClasses} from '../utils';
 import {FieldState} from '../state';
 
 export default {
@@ -12,7 +12,7 @@ export default {
       }
       nodes.data.directives.push({
         name: 'validate',
-        value: {fieldState: this.fieldState, formConfig: this.vueFormConfig}
+        value: {fieldState: this.vueFormState[this.name]}
       });
     });
     let slots = [this.$slots.default];
@@ -20,7 +20,7 @@ export default {
       const labelSlot = h('label', {
         class: 'z-form-label',
         style: {
-          width: this.labelWidth || this.vueFormConfig.label.labelWidth
+          width: this.labelWidth || this.vueFormConfig.label.width
         },
         domProps: {
           innerHTML: this.label
@@ -35,8 +35,26 @@ export default {
           break;
       }
     }
+    if (this.errMsg.show) {
+      let left = this.labelWidth || this.vueFormConfig.label.width;
+      if ((this.labelPosition || this.vueFormConfig.label.position) === 'right') {
+        left = 0;
+      }
+      slots.push(
+        h('p', {
+          class: 'z-field-error',
+          style: {
+            left: left
+          },
+          domProps: {
+            innerHTML: this.label + '是' + this.errMsg.text
+          }
+        })
+      );
+    }
+    const labelClass = 'z-field--' + (this.labelPosition || this.vueFormConfig.label.position);
     return h(this.vueFormConfig.formItemTag || 'div', {
-      class: [this.className, 'z-form-item']
+      class: ['z-field', this.className, labelClass]
     }, slots);
   },
   props: {
@@ -52,27 +70,31 @@ export default {
   },
   data() {
     return {
-      fieldState: {}
+      errMsg: {
+        text: '',
+        show: false
+      }
     };
-  },
-  watch: {
-    fieldState(state) {
-      this.vueFormState._addControl(state);
-      // Object.keys(state).forEach(props => {
-      //   this.$set(this.vueFormState[this.name], props, state[props]);
-      // });
-      // debugger;
-    }
   },
   computed: {
     className() {
       const c = this.vueFormConfig.fieldClasses;
-      const s = this.fieldState;
-      return getClasses(c, s);
+      const s = this.vueFormState[this.name];
+      return getFieldClasses(c, s);
     }
   },
   created() {
-    this.$set(this.vueFormState, this.name, {});
-    this.fieldState = new FieldState(this.name);
+    if (Object.keys(this.vueFormState).indexOf(this.name) !== -1) {
+      throw new Error(this.name + ' already exists');
+    }
+    const fieldState = new FieldState(this.name);
+    this.vueFormState._addControl(fieldState);
+    formBridge.$on('fieldChange', () => {
+      this.$nextTick(() => {
+        let state = this.vueFormState[this.name];
+        this.errMsg.text = Object.values(state['$errMsg'])[0];
+        this.errMsg.show = !!this.errMsg.text && (state.$dirty || this.vueFormState.$submit);
+      });
+    });
   }
 };

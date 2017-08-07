@@ -1,6 +1,5 @@
 import ZForm from './components/z-form';
 import ZFormItem from './components/z-form-item';
-import ZMessage from './components/z-message';
 import validate from './directive/validate';
 import {vueFormConfig} from './providers';
 import config from './config';
@@ -14,8 +13,7 @@ class ZVaildtorBase {
     };
     this.components = {
       [c.formComponent]: ZForm,
-      [c.formItemComponent]: ZFormItem,
-      [c.msgComponent]: ZMessage
+      [c.formItemComponent]: ZFormItem
     };
     this.directives = {validate};
   }

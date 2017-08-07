@@ -1,24 +1,73 @@
 @import "variables";
+@import "lib";
 
-.z-form input{
-  border: 1px solid $color-gray;
-  &:focus {
-    border-color: $color-blue;
+.z-field {
+  display: flex;
+  position: relative;
+  font-size: 14px;
+  @include px2rem(line-height, 30px);
+  @include px2rem(margin-bottom, 30px);
+  &.z-field--left {
+    label {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: none;
+    }
+    input {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  &.z-field--right {
+    label {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: none;
+    }
+    input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+  label{
+    border-radius: 4px;
+    border: 1px solid $color-gray;
+    background-color: $color-white;
+    padding: 5px 10px;
+  }
+  input {
+    display: flex;
+    flex: 1;
+    border: 1px solid $color-gray;
+    border-radius: 4px;
+    padding: 5px 10px;
+    &:focus {
+      border-color: $color-blue;
+    }
+  }
+  .z-field-error {
+    position: absolute;
+    top: 100%;
+    margin-left: 20px;
+    color: $color-red;
   }
 }
 
-.z-field-invalid {
-  border: $color-red;
+.z-field-invalid input {
+  border-color: $color-red;
 }
 
-.z-form-pristine{
-  .z-field-invalid {
+.z-field-pristine{
+  &.z-field-invalid input {
     border-color: $color-gray;
-  }
-  &.z-form-submit {
-    .z-field-invalid {
-      border-color: $color-red;
+    &:focus {
+      border-color: $color-blue;
     }
   }
 }
 
+.z-form-submit {
+  .z-field-invalid input {
+    border-color: $color-red;
+  }
+}

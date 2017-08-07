@@ -66,6 +66,10 @@ button {
   appearance: none;
 }
 
+input[type=button], button, a{
+  cursor: pointer;
+}
+
 ::-webkit-input-placeholder {
 
 }

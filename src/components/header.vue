@@ -6,15 +6,15 @@
         <img src="">
       </a>
       <nav class="main-nav">
-        <ul>
-          <li>
-            <span>XXX</span>
+        <ul class="navList" v-if="getAccess">
+          <li class="navItem" @click="navClick('/manage/note')">
+            <span v-text="getUserName"></span>
           </li>
-          <li>
-            <span></span>
+          <li class="navItem" @click="navClick('/note/home')">
+            <span>退出</span>
           </li>
         </ul>
-        <ul class="navList">
+        <ul class="navList" v-else>
           <li class="navItem" v-for="nav in navList" @click="navClick(nav.href)">
             <span v-text="nav.name"></span>
           </li>
@@ -29,7 +29,7 @@
   import {mapGetters} from 'Vuex';
 
   export default {
-    name: 'bl-header',
+    name: 'z-header',
     data() {
       return {
         navList: NavList
@@ -37,11 +37,9 @@
     },
     computed: {
       ...mapGetters([
-        'getAccess'
-      ]),
-      access() {
-        return this.getAccess;
-      }
+        'getAccess',
+        'getUserName'
+      ])
     },
     methods: {
       navClick(href) {
@@ -62,6 +60,7 @@
     z-index: $base-zIndex;
     @include px2rem(height, $base-head-height);
     background-color: #fff;
+    box-shadow: 0 0 1px 2px #d7d7d7;
     .container {
       display: flex;
       align-items: center;
@@ -80,17 +79,20 @@
           border-radius: 4px;
         }
       }
+
       .main-nav {
         display: flex;
         flex: 1;
         height: 100%;
         justify-content: flex-end;
       }
+
       .navList {
         display: flex;
         height: 100%;
         cursor: pointer;
       }
+
       .navItem {
         margin: 0 10px;
         display: flex;
