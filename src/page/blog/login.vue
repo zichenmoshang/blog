@@ -2,26 +2,32 @@
   <div class="login">
     <p class="login-title">登陆</p>
     <z-form :state="state">
-      <z-form-item name="userName" label="用户名">
+      <z-form-item name="userName"
+                   label="用户名">
         <input type="text"
                name="userName"
                v-model="form.userName"
                required>
       </z-form-item>
-      <z-form-item name="password" label="密码">
+      <z-form-item name="password"
+                   label="密码">
         <input type="password"
                name="password"
                v-model="form.password"
                required>
       </z-form-item>
-      <z-form-item name="confirmPassword" label="确认密码">
+      <z-form-item name="confirmPassword"
+                   label="确认密码">
         <input type="password"
                name="confirmPassword"
                v-model="form.confirmPassword"
+               :compare="{compareValue: form.password, mode: 'equal'}"
                required>
       </z-form-item>
     </z-form>
-    <button class="login-btn" @click="submit">登陆</button>
+    <button class="login-btn"
+            @click="submit">登陆
+    </button>
   </div>
 </template>
 

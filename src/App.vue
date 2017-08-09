@@ -14,4 +14,8 @@
   @import "assets/scss/common";
   @import "assets/scss/z-form";
 
+  #app {
+    height: 100%;
+  }
+
 </style>

@@ -1,9 +1,23 @@
+const compareStrategies = {
+  equal: {
+    msg: '值不相等',
+    fn: (value, compareValue) => value === compareValue
+  }
+};
+
+let compare = {
+  msg: '',
+  fn: (value, {compareValue, mode}) => {
+    compare.msg = compareStrategies[mode]['msg'];
+    return compareStrategies[mode]['fn'](value, compareValue);
+  }
+};
+
 export default {
+  compare,
   required: {
     msg: '必填选项',
-    fn: (value) => {
-      return !!value;
-    }
+    fn: value => !!value
   },
   maxlength: {
     msg: '长度不能超过',

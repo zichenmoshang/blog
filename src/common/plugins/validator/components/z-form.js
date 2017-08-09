@@ -1,7 +1,8 @@
-import {vueFormState, vueFormConfig, formBridge} from '../providers';
+import {vueFormState, vueFormConfig} from '../providers';
 import {getClasses, extend} from '../utils';
 
 export default {
+  name: 'z-form',
   render(h) {
     return h(this.vueFormConfig.formTag, {
       attrs: {
@@ -75,7 +76,7 @@ export default {
     Object.keys(formState).forEach((key) => {
       this.$set(this.state, key, formState[key]);
     });
-    formBridge.$on('fieldChange', () => {
+    this.$on('fieldChange', () => {
       this.state._setValidity();
       this.state._setDirty();
     });

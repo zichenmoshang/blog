@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import validators from './validators';
-import {formBridge} from './providers';
 import {extend} from './utils';
 
 export class FieldState {
@@ -42,7 +41,7 @@ export class FieldState {
     }
   }
 
-  _valid(value, attrs) {
+  _valid(value, attrs, vnode) {
     let errNum = 0;
     const customValidators = attrs.validators;
     const _validators = extend({}, validators, customValidators || {});
@@ -55,6 +54,9 @@ export class FieldState {
     });
     this._setValidity(errNum === 0);
     this._setOldValue(value);
-    formBridge.$emit('fieldChange');
+    if (vnode) {
+      vnode.context.broadcast('z-form-item', 'fieldChange');
+      vnode.context.broadcast('z-form', 'fieldChange');
+    }
   }
 }

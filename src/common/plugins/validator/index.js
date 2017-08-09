@@ -1,6 +1,7 @@
 import ZForm from './components/z-form';
 import ZFormItem from './components/z-form-item';
 import validate from './directive/validate';
+import Emitter from '../../mixins/emitter';
 import {vueFormConfig} from './providers';
 import config from './config';
 import {extend} from './utils';
@@ -15,6 +16,7 @@ class ZVaildtorBase {
       [c.formComponent]: ZForm,
       [c.formItemComponent]: ZFormItem
     };
+    this.mixins = [Emitter];
     this.directives = {validate};
   }
 }

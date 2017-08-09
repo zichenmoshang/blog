@@ -13,7 +13,7 @@ export default {
     let fieldState = binding.value.fieldState;
     const value = getValue(vnode);
     fieldState._setDirty(value);
-    fieldState._valid(value, attrs);
+    fieldState._valid(value, attrs, vnode);
   }
 };
 

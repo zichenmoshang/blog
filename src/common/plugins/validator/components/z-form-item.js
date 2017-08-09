@@ -1,8 +1,9 @@
-import {vueFormState, vueFormConfig, formBridge} from '../providers';
+import {vueFormState, vueFormConfig} from '../providers';
 import {getVModels, getFieldClasses} from '../utils';
 import {FieldState} from '../state';
 
 export default {
+  name: 'z-form-item',
   inject: {vueFormState, vueFormConfig},
   render(h) {
     const vnodes = getVModels(this.$slots.default);
@@ -89,7 +90,7 @@ export default {
     }
     const fieldState = new FieldState(this.name);
     this.vueFormState._addControl(fieldState);
-    formBridge.$on('fieldChange', () => {
+    this.$on('fieldChange', () => {
       this.$nextTick(() => {
         let state = this.vueFormState[this.name];
         this.errMsg.text = Object.values(state['$errMsg'])[0];

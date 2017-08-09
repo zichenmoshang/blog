@@ -17,16 +17,21 @@
   Vue.component(Aside.name, Aside);
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import "../../assets/scss/lib";
 
   .manage-app {
+    height: 100%;
     .container {
       width: 100%;
       max-width: 100%;
     }
   }
   .wrapper {
+    min-height: 100%;
+    box-sizing: border-box;
+    @include px2rem(margin-left, 200px);
     @include px2rem(padding-top, $base-head-height + 10px);
+    @include px2rem(padding-left, 20px);
   }
 </style>
